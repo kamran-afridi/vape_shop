@@ -17,10 +17,10 @@ class CreateOrderProductTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->timestamps(); 
 
-            $table->foreign('product_id')->references('id')->on('product')->onDelete('cascade');
-            $table->foreign('order_id')->references('id')->on('order')->onDelete('cascade');
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+            $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
             $table->foreign('user_id')->nulleable()->references('id')->on('users');
-            $table->foreign('category_id')->references('id')->on('category')->onDelete('cascade');
+            $table->foreign('category_id')->references('id')->on('categorys')->onDelete('cascade');
         });
     }
 
