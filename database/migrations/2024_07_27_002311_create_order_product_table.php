@@ -11,9 +11,9 @@ class CreateOrderProductTable extends Migration
         Schema::create('order_product', function (Blueprint $table) {
             $table->id(); 
             $table->integer('quantity');  
-            $table->bigInteger('product_id');
-            $table->bigInteger('order_id');
-            $table->bigInteger('category_id');
+            $table->unsignedBigInteger('product_id');
+            $table->unsignedBigInteger('order_id');
+            $table->unsignedBigInteger('category_id');
             $table->bigInteger('user_id');
             $table->timestamps(); 
 

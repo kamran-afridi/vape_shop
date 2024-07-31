@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('status'); 
             $table->decimal('total_price');
             $table->decimal('shipping_price'); 
-            $table->bigInteger('customer_id');
-            $table->bigInteger('user_id'); 
+            $table->unsignedBigInteger('customer_id');
+            $table->unsignedBigInteger('user_id'); 
             $table->timestamps(); 
             $table->foreign('user_id')->references('id')->on('user')->onDelete('cascade');
             $table->foreign('customer_id')->references('id')->on('customer')->onDelete('cascade');
