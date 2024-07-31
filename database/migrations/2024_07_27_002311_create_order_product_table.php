@@ -19,8 +19,8 @@ class CreateOrderProductTable extends Migration
 
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
-            $table->foreign('user_id')->nulleable()->references('id')->on('users');
-            $table->foreign('category_id')->references('id')->on('categorys')->onDelete('cascade');
+            $table->foreign('user_id')->nulleable()->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
         });
     }
 
