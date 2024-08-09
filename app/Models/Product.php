@@ -21,22 +21,16 @@ class Product extends Model
         'price',
     ];
 
-    public function orders(): BelongsToMany
-
+    public function orders(): BelongsToMany 
     {
-        return $this->belongsToMany(Order::class);
-        // return $this->belongsToMany(Order::class, 'order_product')
-        //     ->withPivot('quantity');
+        return $this->belongsToMany(Order::class); 
     }
     public function category()
     {
-        return $this->belongsTo(Category::class)->select('id', 'name');
+        return $this->belongsTo(Category::class);
     }
-    public function order_product()
-
+    public function order_product() 
     {
-        return $this->hasMany(Order_Product::class, 'product_id', 'id');
-        // return $this->belongsToMany(Order::class, 'order_product')
-        //     ->withPivot('quantity');
+        return $this->hasMany(Order_Product::class, 'product_id', 'id'); 
     }
 }
