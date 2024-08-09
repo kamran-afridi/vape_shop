@@ -7,6 +7,7 @@ use Filament\Widgets\ChartWidget;
 class BlogPostsChart extends ChartWidget
 {
     protected static ?string $heading = 'Profit';
+    protected static string $color = 'info';
 
     protected function getData(): array
     {
@@ -15,6 +16,8 @@ class BlogPostsChart extends ChartWidget
                 [
                     'label' => 'Blog posts created',
                     'data' => [0, 10, 5, 2, 21, 32, 45, 74, 65, 45, 77, 89],
+                    'backgroundColor' => '#36A2EB',
+                    'borderColor' => '#9BD0F5',
                 ],
             ],
             'labels' => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
