@@ -7,7 +7,7 @@ use Filament\Widgets\ChartWidget;
 class CustomerOverview extends ChartWidget
 {
     protected static ?string $heading = 'Profit';
-    protected static string $color = 'info';
+    protected static string $color = 'info'; 
     public function getChartData(): array
     {
         // Example chart data
@@ -26,6 +26,6 @@ class CustomerOverview extends ChartWidget
 
     protected function getType(): string
     {
-        return 'line';
+        return 'line'; 
     }
 }
