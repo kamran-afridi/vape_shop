@@ -108,6 +108,7 @@ class OrderResource extends Resource
             ->columns([
                 TextColumn::make('id'),
                 TextColumn::make('status'),
+                TextColumn::make('created_at'),
                 TextColumn::make('order_product.quantity'),
                 TextColumn::make('total_price')->money('usd'),
                 TextColumn::make('shipping_price')->money('usd'),
