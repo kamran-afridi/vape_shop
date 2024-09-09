@@ -29,7 +29,7 @@ class Order_Product extends Pivot
      * @var array<int, string>
      */
     protected $fillable = [
-        'quantity', 
+        'quantity',
         'category_id',
         'product_id',
     ];
@@ -51,24 +51,39 @@ class Order_Product extends Pivot
     {
         return $this->belongsTo(Order::class);
     }
-    
+
     public static function boot()
     {
         parent::boot();
         static::saving(function ($model) {
-            $products = Product::whereIn('id', $model->product_ids)->get();
-            $totalPrice = $products->sum('price') * $model->quantity + $model->shipping_price;
-            $model->total_price = $totalPrice;
-            foreach ($products as $product) {
-                $product->decrement('quantity', $model->quantity);
+            // Initialize the total price
+            $totalPrice = 0;
+
+            // Get all the products added in the repeater
+            foreach ($model->order_product as $orderProduct) {
+                $product = Product::find($orderProduct['product_id']);
+
+                if ($product) {
+                    // Calculate the price for each product (price * quantity)
+                    $totalPrice += $product->price * $orderProduct['quantity'];
+
+                    // Decrement the product quantity in stock
+                    $product->decrement('quantity', $orderProduct['quantity']);
+                }
             }
+
+            // Add the shipping price to the total price
+            $totalPrice += $model->shipping_price;
+
+            // Update the total price in the model
+            $model->total_price = $totalPrice;
         });
         static::creating(function ($model) {
             if (Auth::check()) {
                 $model->user_id = Auth::id();
             }
         });
-    } 
+    }
     // public function products(): BelongsToMany
     // {
     //     return $this->belongsToMany(Product::class, 'order_product')
