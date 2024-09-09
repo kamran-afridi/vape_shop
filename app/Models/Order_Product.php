@@ -55,14 +55,14 @@ class Order_Product extends Pivot
     public static function boot()
     {
         parent::boot();
-        // static::saving(function ($model) {
-        //     $products = Product::whereIn('id', $model->product_ids)->get();
-        //     $totalPrice = $products->sum('price') * $model->quantity + $model->shipping_price;
-        //     $model->total_price = $totalPrice;
-        //     foreach ($products as $product) {
-        //         $product->decrement('quantity', $model->quantity);
-        //     }
-        // });
+        static::saving(function ($model) {
+            $products = Product::whereIn('id', $model->product_ids)->get();
+            $totalPrice = $products->sum('price') * $model->quantity + $model->shipping_price;
+            $model->total_price = $totalPrice;
+            foreach ($products as $product) {
+                $product->decrement('quantity', $model->quantity);
+            }
+        });
         static::creating(function ($model) {
             if (Auth::check()) {
                 $model->user_id = Auth::id();
