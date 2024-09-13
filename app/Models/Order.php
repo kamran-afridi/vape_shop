@@ -32,7 +32,7 @@ class Order extends Model
         'status',
         'shipping_price',
         'customer_id',
-    ];  
+    ];
     protected $casts = [
         'status' => OrderStatus::class,
     ];
@@ -50,11 +50,42 @@ class Order extends Model
     }
     public static function boot()
     {
+
         parent::boot();
+        static::saved(function ($model) {
+            // Initialize the total price
+            $totalPrice = 0;
+
+            // Reload the 'products' relationship after save to ensure it's populated
+            $model->load('products');
+
+            // Loop through each product in the pivot table
+            foreach ($model->products as $product) {
+                $quantity = $product->pivot->quantity;
+                $totalPrice += $product->price * $quantity;
+                // dd($totalPrice);
+                // Decrement stock for each product
+                $product->decrement('quantity', $quantity);
+            }
+
+            // Add shipping price to the total price
+            $totalPrice += $model->shipping_price;
+
+            // Use updateQuietly to avoid triggering the event again
+            $model->updateQuietly(['total_price' => $totalPrice]);
+        });
+
+
+
         static::creating(function ($model) {
             if (Auth::check()) {
                 $model->user_id = Auth::id();
             }
         });
+    }
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'order_product')
+            ->withPivot('quantity'); // Pivot table columns
     }
 }

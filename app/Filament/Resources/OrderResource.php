@@ -32,9 +32,9 @@ class OrderResource extends Resource
                 Forms\Components\Section::make('')
                     ->schema([
                         Grid::make(1)->schema([
-                            Repeater::make('Order')
+                            Repeater::make('order_product')  // Assuming 'order_product' is the relationship name
                                 ->label('Products')
-                                ->relationship('order_product')
+                                ->relationship('order_product') // Your existing relationship
                                 ->schema([
                                     Select::make('category_id')
                                         ->relationship('category', 'name')
@@ -93,11 +93,11 @@ class OrderResource extends Resource
                                 'cancelled' => 'Cancelled',
                             ]),
 
-                        TextInput::make('total_price')
-                            ->required()
+                        TextInput::make('total_price') 
                             ->label('Total Amount')
                             ->numeric()
-                            ->prefix('$'),
+                            ->prefix('$')
+                            // ->disabled() // Disable input to prevent manual edits, it's calculated automatically
                     ]),
             ]);
     }
@@ -114,7 +114,7 @@ class OrderResource extends Resource
                 TextColumn::make('customer.name')->label('Customer'),
                 TextColumn::make('user.name')->label('User'),
                 TextColumn::make('order_product.category.name')->label('Category'),
-                TextColumn::make('order_product.products.name')->label('Products'),  
+                TextColumn::make('order_product.products.name')->label('Products'),
                 TextColumn::make('created_at')->date(),
             ])
             ->filters([

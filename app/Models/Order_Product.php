@@ -55,29 +55,7 @@ class Order_Product extends Pivot
     public static function boot()
     {
         parent::boot();
-        static::saving(function ($model) {
-            // Initialize the total price
-            $totalPrice = 0;
-
-            // Get all the products added in the repeater
-            foreach ($model->order_product as $orderProduct) {
-                $product = Product::find($orderProduct['product_id']);
-
-                if ($product) {
-                    // Calculate the price for each product (price * quantity)
-                    $totalPrice += $product->price * $orderProduct['quantity'];
-
-                    // Decrement the product quantity in stock
-                    $product->decrement('quantity', $orderProduct['quantity']);
-                }
-            }
-
-            // Add the shipping price to the total price
-            $totalPrice += $model->shipping_price;
-
-            // Update the total price in the model
-            $model->total_price = $totalPrice;
-        });
+        
         static::creating(function ($model) {
             if (Auth::check()) {
                 $model->user_id = Auth::id();
